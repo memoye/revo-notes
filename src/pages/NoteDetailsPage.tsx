@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { useNotes } from "../hooks/useNotes";
-import { PenIcon, Trash2Icon } from "lucide-react";
+import { MoveLeft, PenIcon, Trash2Icon } from "lucide-react";
 
 export default function NoteDetailsPage() {
   const { id } = useParams();
@@ -34,6 +34,12 @@ export default function NoteDetailsPage() {
           <span className="sr-only">Delete {note?.title}</span>
           <Trash2Icon size={16} /> Delete
         </button>
+        <Link
+          className="bg-white  inline-flex items-center gap-2 text-blue-500 p-2 rounded-md drop-shadow-md"
+          to={`/`}
+        >
+          <MoveLeft size={16} /> Back
+        </Link>
       </div>
     </main>
   );

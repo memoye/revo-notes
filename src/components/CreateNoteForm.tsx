@@ -87,7 +87,7 @@ export const CreateNoteForm = ({
         <button
           type="button"
           onClick={() => {
-            creating ? closeForm() : navigate("/");
+            creating ? closeForm() : navigate(-1);
           }}
           className="border-black text-white px-4 py-2 rounded-md font-semibold"
         >
