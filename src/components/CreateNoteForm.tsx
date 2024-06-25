@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Note } from "../lib/definitions";
 import { useNotes } from "../hooks/useNotes";
+import { useNavigate } from "react-router-dom";
 
 export const CreateNoteForm = ({
   closeForm,
   prevtitle = "",
   prevbody = "",
+  previd = "",
   creating = true,
   date,
 }: {
@@ -13,6 +15,7 @@ export const CreateNoteForm = ({
   prevtitle?: string;
   creating?: boolean;
   prevbody?: string;
+  previd?: string;
   date?: string;
 }) => {
   const [title, setTitle] = useState(prevtitle);
@@ -21,6 +24,7 @@ export const CreateNoteForm = ({
   const [error, setError] = useState<string | null>(null);
 
   const { createNote, updateNote } = useNotes();
+  const navigate = useNavigate();
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -31,14 +35,14 @@ export const CreateNoteForm = ({
     }
 
     const payload: Note = {
-      id: crypto.randomUUID(),
+      id: previd ? previd : crypto.randomUUID(),
       date: date ? date : new Date(Date.now()).toUTCString(),
       title,
       body,
     };
 
     creating ? createNote(payload) : updateNote(payload);
-    closeForm();
+    creating ? closeForm() : navigate("/");
   }
 
   return (
@@ -51,9 +55,7 @@ export const CreateNoteForm = ({
           {error}
         </div>
       )}
-
       <h2 className="text-3xl text-white mb-4">Create Note</h2>
-
       <div className="flex flex-col w-full mb-4">
         <label
           className="font-medium text-gray-300 text-sm mb-2"
@@ -71,21 +73,22 @@ export const CreateNoteForm = ({
           placeholder="Enter a title for your note"
         />
       </div>
-
       <div>
         <textarea
           id="body"
           name="body"
+          value={body}
           onChange={(e) => setBody(e.target.value)}
           placeholder="Start typing..."
           className="w-full border-slate-500 border py-2 px-4 rounded-md placeholder:italic"
         />
       </div>
-
       <div className="flex items-center justify-end gap-2">
         <button
           type="button"
-          onClick={closeForm}
+          onClick={() => {
+            creating ? closeForm() : navigate("/");
+          }}
           className="border-black text-white px-4 py-2 rounded-md font-semibold"
         >
           Cancel

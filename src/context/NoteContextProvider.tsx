@@ -15,16 +15,16 @@ export const NotesContext = createContext<NotesContextType | null>(null);
 export function NotesContextProvider({ children }: { children: ReactNode }) {
   const savedNotes: Note[] = getFromLocalStorage("notes") ?? [];
 
-  const [notes, setNotes] = useState<Note[]>(savedNotes);
+  const [notes, setNotes] = useState<Note[]>(savedNotes) ?? [];
 
   function createNote(note: Note) {
-    if (notes) {
+    if (notes?.length > 0) {
       setNotes((prev) => [...prev, note]);
     } else setNotes([note]);
   }
 
   function updateNote(note: Note) {
-    const otherNotes = notes.filter(({ id }) => id !== note.id);
+    const otherNotes = notes?.filter(({ id }) => id !== note.id) ?? [];
     const newNotes = [...otherNotes, note];
     setNotes(newNotes);
   }
