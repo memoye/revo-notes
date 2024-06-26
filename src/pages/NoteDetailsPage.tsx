@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useNotes } from "../hooks/useNotes";
 import { MoveLeft, PenIcon, Trash2Icon } from "lucide-react";
+import { NotesGrid } from "../components/NotesGrid";
 
 export default function NoteDetailsPage() {
   const { id } = useParams();
