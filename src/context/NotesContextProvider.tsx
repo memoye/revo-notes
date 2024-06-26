@@ -1,31 +1,49 @@
-import { ReactNode, useState } from "react";
-import { Note } from "../lib/definitions";
-import { getFromLocalStorage } from "../lib/utils";
-import { NotesContext } from "./NoteContextProvider";
+import { ReactNode, createContext, useEffect, useState } from "react";	
+import { Note } from "../lib/definitions";	
+import { getFromLocalStorage, saveToLocalStorage } from "../lib/utils";	
 
-export function NotesContextProvider({ children }: { children: ReactNode }) {
-  const savedNotes: Note[] = getFromLocalStorage("notes") ?? null;
+type NotesContextType = {	
+  notes: Note[];	
+  createNote: (note: Note) => void;	
+  updateNote: (note: Note) => void;	
+  deleteNotes: (notes: string[]) => void;	
+  // selectedNotes	
+};	
 
-  const [
-    notes,
-    // setNotes
-  ] = useState<Note[]>(savedNotes);
+export const NotesContext = createContext<NotesContextType | null>(null);	
 
-  function createNote(note: Note) {}
+export function NotesContextProvider({ children }: { children: ReactNode }) {	
+  const savedNotes: Note[] = getFromLocalStorage("notes") ?? [];	
 
-  function updateNote(id: string) {
-    console.log(id);
-  }
+  const [notes, setNotes] = useState<Note[]>(savedNotes) ?? [];	
 
-  function deleteNotes(notes: string[]) {
-    console.log(notes);
-  }
+  function createNote(note: Note) {	
+    if (notes?.length > 0) {	
+      setNotes((prev) => [...prev, note]);	
+    } else setNotes([note]);	
+  }	
 
-  return (
-    <NotesContext.Provider
-      value={{ notes, createNote, updateNote, deleteNotes }}
-    >
-      {children}
-    </NotesContext.Provider>
-  );
+  function updateNote(note: Note) {	
+    const otherNotes = notes?.filter(({ id }) => id !== note.id) ?? [];	
+    const newNotes = [...otherNotes, note];	
+    setNotes(newNotes);	
+  }	
+
+  function deleteNotes(notesToDel?: string[]) {	
+    if (!notesToDel) return;	
+    const newNotes = notes.filter(({ id }) => !notesToDel.includes(id));	
+    setNotes(newNotes);	
+  }	
+
+  useEffect(() => {	
+    saveToLocalStorage("notes", notes);	
+  }, [notes]);	
+
+  return (	
+    <NotesContext.Provider	
+      value={{ notes, createNote, updateNote, deleteNotes }}	
+    >	
+      {children}	
+    </NotesContext.Provider>	
+  );	
 }
