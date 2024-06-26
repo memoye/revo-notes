@@ -40,7 +40,12 @@ export default function NoteDetailsPage() {
       <h1 className="text-4xl mb-2 font-bold mt-12"> {note?.title}</h1>
       <p className="text-sm text-neutral-500">Created: {note?.date}</p>
 
-      <p className="py-6">{note?.body}</p>
+      <p className="py-6 flex-1">{note?.body}</p>
+
+      <h2 className="mb-4 mt-8 text-3xl">Notes</h2>
+      {notes && notes.length > 0 &&
+        <NotesGrid items={notes} />
+      }
     </main>
   );
 }
