@@ -42,7 +42,7 @@ export const CreateNoteForm = ({
     };
 
     creating ? createNote(payload) : updateNote(payload);
-    creating ? closeForm() : navigate("/");
+    creating ? closeForm() : navigate(-1);
   }
 
   return (

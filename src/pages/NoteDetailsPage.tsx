@@ -11,12 +11,7 @@ export default function NoteDetailsPage() {
   const { deleteNotes } = useNotes();
 
   return (
-    <main className="p-7">
-      <h1 className="text-4xl mb-2 font-bold "> {note?.title}</h1>
-      <p>Created: {note?.date}</p>
-
-      <p className="m-2">{note?.body}</p>
-
+    <main className="p-7 flex flex-col min-h-dvh">
       <div
         className="flex items-center gap-2"
         onClick={(e) => e.stopPropagation()}
@@ -41,6 +36,11 @@ export default function NoteDetailsPage() {
           <MoveLeft size={16} /> Back
         </Link>
       </div>
+
+      <h1 className="text-4xl mb-2 font-bold mt-12"> {note?.title}</h1>
+      <p className="text-sm text-neutral-500">Created: {note?.date}</p>
+
+      <p className="py-6">{note?.body}</p>
     </main>
   );
 }

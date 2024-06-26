@@ -22,7 +22,7 @@ export default function HomePage() {
       <h1 className="text-4xl font-bold mb-8">Welcome to Notes!</h1>
 
       <h2 className="mb-4 mt-8 text-3xl">Notes</h2>
-      {notes && notes.length > 1 ? (
+      {notes && notes.length > 0 ? (
         <NotesGrid items={notes} />
       ) : (
         <div className="h-16 border flex text-neutral-500 items-center justify-center py-16 rounded-lg">
